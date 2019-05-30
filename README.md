@@ -1,5 +1,9 @@
 # Markdown Links
 
+## Algoritmo de Solución del Problema
+
+![Diagrama de flujo](/LIM009-fe-md-links/diagrama-de-flujo.png)
+
 ## Preámbulo
 
 [Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado
