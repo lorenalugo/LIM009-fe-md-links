@@ -1,10 +1,6 @@
-import { convertIntoAbsolute, isFile, getMdFiles, getMdLinks } from '../md-links';
+import { convertIntoAbsolute, isDir, getPathsFromDirectory, getMdFiles, getMdLinks } from '../md-links';
 
 /** 
-para testear file system, usar el siguiente mock???
-https://github.com/tschaub/mock-fs
-
-
 https://www.npmjs.com/package/mock-fs
 **/
 describe('convertIntoAbsolute', () => {
@@ -19,15 +15,33 @@ describe('convertIntoAbsolute', () => {
 	}
 });
 // escribir archivo y directorio para testear
-describe('isFile', () => {
+describe('isDir', () => {
 	it('Debería ser una función', () => {
-		expect(typeof isFile).toBe('function');
+		expect(typeof isDir).toBe('function');
 	})
-	it('Si se ingresa una ruta de archivo, debería leerlo', () => {
-		expect(isFile('README.md')).toBe('leyendo el archivo')
+	it('Si se ingresa una ruta de archivo, debería retornar true', (done) => {
+		return isDir('README.md').then((result) => expect(result).toBe(false));
+		done()
 	})
-	it('Si se ingresa una ruta de un directorio, debería retornar un error', () => {
-		expect(isFile('/directory')).toBe('error')
+	it('Si se ingresa una ruta de un directorio, debería retornar false', (done) => {
+	    return isDir('test').then((result) => expect(result).toBe(false));
+	    done()
+	})
+});
+
+
+describe('getPathsFromDirectory', () => {
+	const expected = [];
+	it('Debería ser una función', () => {
+		expect(typeof getPathsFromDirectory).toBe('function');
+	})
+	it('Si se ingresa una ruta de un directorio, debería retornar un array', (done) => {
+		return getPathsFromDirectory('test').then((result) => expect(Array.isArray(result).toBe(true)));
+		done()
+	})
+	it('Si se ingresa una ruta de un directorio, debería retornar un array con todos las rutas de los archivos', (done) => {
+	    return getPathsFromDirectory('test').then((result) => expect(result).toEqual(expect.arrayContaining(expected)));
+	    done()
 	})
 });
 
@@ -36,28 +50,29 @@ describe('getMdFiles', () => {
 	it('Debería ser una función', () => {
 		expect(typeof getMdFiles).toBe('function');
 	})
-	it('Si se ingresa una ruta de archivo, debería retornar su extensión', () => {
-		expect(getMdFiles('README.md')).toBe('.md');
-		expect(getMdFiles('../directory/file.js')).toBe('.js')
+	it('Si se ingresa una array de archivos que no tienen extensión .md, debería retornar un array vacío', () => {
+		expect(getMdFiles(['index.spec.js', 'md-links.spec.js'])).toHaveLength(0);
+		expect(getMdFiles(['index.spec.js', 'md-links.spec.js', 'README.md'])).toHaveLength(1);
 	})
 });
 
 // escribir archivo para testear
 describe('getMdLinks', () => {
+	const expected = [];
 	it('Debería ser una función', () => {
 		expect(typeof getMdLinks).toBe('function');
 	})
-	it('Debería retornar un array', () => {
-		expect(Array.isArray(getMdLinks('directory/file.txt'))).toBe(true)
+	it('Debería retornar un array', (done) => {
+		return getMdLinks('directory/file.txt').then((result) => expect(Array.isArray(result)).toBe(true));
+		done()
 	})
-	it('Debería retornar un array con longitud 2', () => {
-		expect(getMdLinks('file.txt').lenght).toBe(2)
+	it('Debería retornar un array con longitud 2', (done) => {
+		return getMdLinks('directory/file.txt').then((result) => expect(result).toHaveLength(1));
+		done()
 	})
-
 	// escribir el array expected
-	it('Debería retornar un array que contenga expected', () => {
-		expect(getMdLinks('file.txt')).toEqual(
-      expect.arrayContaining(expected),
-      );
+	it('Debería retornar un array que contenga expected', (done) => {
+		return getMdLinks('directory/file.txt').then((result) => expect(result).toEqual(expect.arrayContaining(expected)));
+		done()
 	})
 });
