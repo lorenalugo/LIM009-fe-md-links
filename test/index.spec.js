@@ -1,39 +1,44 @@
-import { isFileOrDirectory, getExtensionName, getPathType, getMdLinks } from '../md-links';
+import { convertIntoAbsolute, isFile, getMdFiles, getMdLinks } from '../md-links';
 
-// escribir archivo y directorio para testear
-describe('isFileOrDirectory', () => {
+/** 
+para testear file system, usar el siguiente mock???
+https://github.com/tschaub/mock-fs
+
+
+https://www.npmjs.com/package/mock-fs
+**/
+describe('convertIntoAbsolute', () => {
 	it('Debería ser una función', () => {
-		expect(typeof isFileOrDirectory).toBe('function');
+		expect(typeof convertIntoAbsolute).toBe('function');
+	})
+	it('Debería retornar tal, para la ruta relativa ../directory/file.txt'), () => {
+		expect(convertIntoAbsolute('../directory/file.txt').toEqual('/home/directory/file.txt'))
+	}
+	it('Debería retornar tal, para la ruta absoluta /directory/file.txt'), () => {
+		expect(convertIntoAbsolute('/directory/file.txt').toEqual('/home/directory/file.txt'))
+	}
+});
+// escribir archivo y directorio para testear
+describe('isFile', () => {
+	it('Debería ser una función', () => {
+		expect(typeof isFile).toBe('function');
 	})
 	it('Si se ingresa una ruta de archivo, debería leerlo', () => {
-		expect(isFileOrDirectory('README.md')).toBe('leyendo el archivo')
+		expect(isFile('README.md')).toBe('leyendo el archivo')
 	})
 	it('Si se ingresa una ruta de un directorio, debería retornar un error', () => {
-		expect(isFileOrDirectory('/directory')).toBe('error')
+		expect(isFile('/directory')).toBe('error')
 	})
 });
 
-// escribir archivos para testear
-describe('getExtensionName', () => {
+// escribir archivos para testear, completar la redaccion de la prueba
+describe('getMdFiles', () => {
 	it('Debería ser una función', () => {
-		expect(typeof getExtensionName).toBe('function');
+		expect(typeof getMdFiles).toBe('function');
 	})
 	it('Si se ingresa una ruta de archivo, debería retornar su extensión', () => {
-		expect(getExtensionName('README.md')).toBe('.md');
-		expect(getExtensionName('../directory/file.js')).toBe('.js')
-	})
-});
-
-// escribir rutas para testear
-describe('getPathType', () => {
-	it('Debería ser una función', () => {
-		expect(typeof getPathType).toBe('function');
-	})
-	it('Debería retornar true si se ingresa una ruta absoluta', () => {
-		expect(getPathType('/directory/file.txt')).toBe(true)
-	})
-	it('Debería retornar false si se ingresa una ruta relativa', () => {
-		expect(getPathType('file.txt')).toBe(false)
+		expect(getMdFiles('README.md')).toBe('.md');
+		expect(getMdFiles('../directory/file.js')).toBe('.js')
 	})
 });
 
