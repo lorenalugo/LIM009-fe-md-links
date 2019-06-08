@@ -26,7 +26,38 @@ const getMdFiles = (filesArr) => {
 	return filesArr.filter((file) => path.extname(file) === '.md')
 }
 
+async function getMdLinks(filesArr) {
+	// const regexUrl = /\((https?:\/\/)?([\d\w\.-]+)\.([\w\.]{2,6})([\/\w \.-]*)*\/?\)/;
+	const regexLink = /\[(.*?)\]/g;
+	const regexUrl = /(\((.*?)\))/g;
+	const regexLinks = /[^!](\[(.*?)\])(\((.*?)\))/g;
+	const links = await Promise.all(filesArr.map(async (file) => {
+		// reads the file and storage its content
+		const content = await fsPromises.readFile(file, 'utf-8');
+		// looks for the links
+		const fileLinkList = await content.match(regexLinks);
+		const objArray = await fileLinkList.map((link) => {return {href: link.match(regexUrl).toString().replace(/(\(|\))/g, ''), text: link.match(regexLink).toString().replace(/(\[|\])/g, ''), file}});
+		return objArray;
+	}))
+	const output = await links.reduce(async (accumulator, currentValue) => await accumulator.concat(currentValue));
+	return output;
+}
+// const nombre = async() => {}
+async function getFileInfo(ruta) {
+	try{
+	const nuevaRuta = convertIntoAbsolute(ruta);
+	const fileList = (await isDir(nuevaRuta)) ? await getPathsFromDirectory(nuevaRuta) : [nuevaRuta]
+	const mdFiles = getMdFiles(await fileList);
+	const links = await getMdLinks(mdFiles);
+	console.log(links);
+	}
+	catch(error){
+		console.log(error)
+	}
+	
+}
 
+getFileInfo('README.md');
 // /home/lorena/common-core/proyectos/LIM009-fe-md-links
 /**
 ** RUTAS ABSOLUTAS **
