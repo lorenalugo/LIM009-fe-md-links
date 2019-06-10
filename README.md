@@ -4,56 +4,11 @@
 
 ![Diagrama de flujo](diagrama-de-flujo.png)
 
-## Introducción
-
-[Node.js](https://nodejs.org/es/) es un entorno de ejecución para JavaScript
-construido con el [motor de JavaScript V8 de Chrome](https://developers.google.com/v8/).
-Esto nos va a permitir ejecutar JavaScript en el entorno del sistema operativo,
-ya sea tu máquina o un servidor, lo cual nos abre las puertas para poder
-interactuar con el sistema en sí, archivos, redes, ...
-
-En este proyecto nos alejamos un poco del navegador para construir un programa
-que se ejecute usando Node.js, donde aprenderemos sobre cómo interactuar con el
-sistema archivos, con el entorno (_proceso_, _env_, _stdin/stdout/stderr_), ...
-
-## Objetivos
-
-El objetivo práctico de este proyecto es que aprendas cómo crear tu propia
-**librería** (o biblioteca - _library_) en JavaScript.
-
-Diseñar tu propia librería es una experiencia fundamental para cualquier
-desarrollador porque que te obliga a pensar en la interfaz (API) de tus
-_módulos_ y cómo será usado por otros developers. Debes tener especial
-consideración en peculiaridades del lenguaje, convenciones y buenas prácticas.
-
-Tópicos: [Node.js](https://nodejs.org/en/),
-[módulos (CommonJS)](https://nodejs.org/docs/latest-v0.10.x/api/modules.html),
-[file system](https://nodejs.org/api/fs.html),
-[path](https://nodejs.org/api/path.html),
 [http.get](https://nodejs.org/api/http.html#http_http_get_options_callback),
 parsing,
 [markdown](https://daringfireball.net/projects/markdown/syntax), CLI,
 [npm-scripts](https://docs.npmjs.com/misc/scripts),
 [semver](https://semver.org/), ...
-
-## Consideraciones generales
-
-- Este proyecto se debe "resolver" de manera individual.
-
-- La librería debe estar implementada en JavaScript para ser ejecutada con
-Node.js. **Está permitido usar librerías externas**.
-
-- Tu módulo debe ser instalable via `npm install <github-user>/md-links`. Este
-módulo debe incluir tanto un _ejecutable_ que podamos invocar en la línea de
-comando como una interfaz que podamos importar con `require` para usarlo
-programáticamente.
-
-- Los tests unitarios deben **cubrir un mínimo del 70% de _statements_, _functions_,
-_lines_ y _branches_.**, ademas de pasar los test y el linter. Te recomendamos 
-utilizar [Jest](https://jestjs.io/) para tus pruebas unitarias.
-
-- Deberas de crear un script en el `package.json` que transforme el codigo
-ES6+ a ES5 con ayuda de babel.
 
 ## Criterios de aceptacion
 
@@ -84,29 +39,6 @@ las necesidades del usuario:
 - El ejecutable implementa `--validate`.
 - El ejecutable implementa `--stats`.
 - El ejecutable implementa `--validate` y `--stats` juntos.
-
-
-Para comenzar este proyecto tendrás que hacer un _fork_ y _clonar_ este
-repositorio.
-
-Antes de comenzar a codear, es necesario que pensemos en la arquitectura y
-boilerplate del proyecto, por lo que `antes de que empieces tu planificacion
-y a trabajar en la funcionalidad de tu proyecto deberás de haber
-creado tu boilerplate y tus tests`. Esto debería quedar
-detallado en tu repo y haberte asegurado de haber recibido feedback de uno
-de tus coaches. Una vez hayas terminado de definir la arquitectura y los tests
-de tu proyecto estarás lista para iniciar con tu **planificacion** por lo cual
-deberas de hacer uso de una serie de _issues_ y _milestones_ para priorizar
-tus tareas y crear un _project_ para organizar el trabajo y poder hacer
-seguimiento de tu progreso.
-
-Dentro de cada _milestone_ se crearán y asignarán los _issues_ que cada quien
-considere necesarios.
-
-### JavaScript API
-
-El módulo debe poder importarse en otros scripts de Node.js y debe ofrecer la
-siguiente interfaz:
 
 #### `mdLinks(path, options)`
 
@@ -242,57 +174,9 @@ que usamos para la currícula no está publicado en el registro público de NPM,
 así que lo instalamos directamente desde GitHub con el comando `npm install
 Laboratoria/course-parser`.
 
-### Sugerencias de implementación
-
-La implementación de este proyecto tiene varias partes: leer del sistema de
-archivos, recibir argumentos a través de la línea de comando, analizar texto,
-hacer consultas HTTP, ... y todas estas cosas pueden enfocarse de muchas formas,
-tanto usando librerías como implementando en VanillaJS.
-
-Por poner un ejemplo, el _parseado_ (análisis) del markdown para extraer los
-links podría plantearse de las siguientes maneras (todas válidas):
-
-- Usando un _módulo_ como [markdown-it](https://github.com/markdown-it/markdown-it),
-  que nos devuelve un arreglo de _tokens_ que podemos recorrer para identificar
-  los links.
-- Siguiendo otro camino completamente, podríamos usar
-  [expresiones regulares (`RegExp`)](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Regular_Expressions).
-- También podríamos usar una combinación de varios _módulos_ (podría ser válido
-  transformar el markdown a HTML usando algo como [marked](https://github.com/markedjs/marked)
-  y de ahí extraer los link con una librería de DOM como [JSDOM](https://github.com/jsdom/jsdom)
-  o [Cheerio](https://github.com/cheeriojs/cheerio) entre otras).
-- Usando un _custom renderer_ de [marked](https://github.com/markedjs/marked)
-  (`new marked.Renderer()`).
-
-No dudes en consultar a tus compañeras, coaches y/o el [foro de la comunidad](http://community.laboratoria.la/c/js)
-si tienes dudas existenciales con respecto a estas decisiones. No existe una
-"única" manera correcta :wink:
-
-### Tutoriales / NodeSchool workshoppers
-
-- [learnyounode](https://github.com/workshopper/learnyounode)
-- [how-to-npm](https://github.com/workshopper/how-to-npm)
-- [promise-it-wont-hurt](https://github.com/stevekane/promise-it-wont-hurt)
-
 ### Otros recursos
 
-- [Acerca de Node.js - Documentación oficial](https://nodejs.org/es/about/)
-- [Node.js file system - Documentación oficial](https://nodejs.org/api/fs.html)
-- [Node.js http.get - Documentación oficial](https://nodejs.org/api/http.html#http_http_get_options_callback)
-- [Node.js - Wikipedia](https://es.wikipedia.org/wiki/Node.js)
-- [What exactly is Node.js? - freeCodeCamp](https://medium.freecodecamp.org/what-exactly-is-node-js-ae36e97449f5)
-- [¿Qué es Node.js y para qué sirve? - drauta.com](https://www.drauta.com/que-es-nodejs-y-para-que-sirve)
-- [¿Qué es Nodejs? Javascript en el Servidor - Fazt en YouTube](https://www.youtube.com/watch?v=WgSc1nv_4Gw)
-- [¿Simplemente qué es Node.js? - IBM Developer Works, 2011](https://www.ibm.com/developerworks/ssa/opensource/library/os-nodejs/index.html)
-- [Node.js y npm](https://www.genbeta.com/desarrollo/node-js-y-npm)
-- [Módulos, librerías, paquetes, frameworks... ¿cuál es la diferencia?](http://community.laboratoria.la/t/modulos-librerias-paquetes-frameworks-cual-es-la-diferencia/175)
-- [Asíncronía en js](https://carlosazaustre.com/manejando-la-asincronia-en-javascript/)
 - [NPM](https://docs.npmjs.com/getting-started/what-is-npm)
 - [Publicar packpage](https://docs.npmjs.com/getting-started/publishing-npm-packages)
 - [Crear módulos en Node.js](https://docs.npmjs.com/getting-started/publishing-npm-packages)
-- [Leer un archivo](https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback)
-- [Leer un directorio](https://nodejs.org/api/fs.html#fs_fs_readdir_path_options_callback)
-- [Path](https://nodejs.org/api/path.html)
 - [Linea de comando CLI](https://medium.com/netscape/a-guide-to-create-a-nodejs-command-line-package-c2166ad0452e)
-- [Promise] (https://javascript.info/promise-basics)
-- [Comprendiendo Promesas en Js](https://hackernoon.com/understanding-promises-in-javascript-13d99df067c1)

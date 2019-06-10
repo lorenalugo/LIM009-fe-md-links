@@ -1,6 +1,7 @@
 const https = require('https');
 
-module.exports = async function linksValidator(obj) {
+module.exports = async function linksValidator(linksArr) {
+    return linksArr.map((obj) => {
     return new Promise((resolve, reject) => {
         https.get(obj.href, response => {
         	if (response.statusCode >= 200 && response.statusCode < 400) {
@@ -9,13 +10,14 @@ module.exports = async function linksValidator(obj) {
         	    resolve(obj);
         	} else {
         		obj.statusCode = response.statusCode;
-    	        obj.statusMessage = 'FAIL';
+    	        obj.statusMessage = 'fail';
         	    resolve(obj);
         	}
         }).on('error', (err) => {
   			obj.statusCode = err.code;
-    		obj.statusMessage = 'FAIL';
+    		obj.statusMessage = 'fail';
         	resolve(obj);
 			});     
+    })
     })
 }

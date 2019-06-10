@@ -20,6 +20,9 @@
     "markdown",
     "links"
   ],
+  "bin": {
+    "md-links": "./src/cli.js"
+  },
   "author": "Lorena Lugo",
   "license": "ISC",
   "bugs": {
