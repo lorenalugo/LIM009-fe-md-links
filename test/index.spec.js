@@ -18,68 +18,89 @@ describe('isDir', () => {
 		expect(typeof fn.isDir).toBe('function');
 	})
 	it('Si se ingresa una ruta de archivo, debería retornar false', (done) => {
-		return fn.isDir('/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/file1-1.md').then((result) => console.log(result));
-		done()
+		return fn.isDir('/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/file1-1.md')
+		.then((result) => {
+			expect(result).toBe(false); 
+			done()
+		});
 	})
-	//it('Si se ingresa una ruta de un directorio, debería retornar true', (done) => {
-	//    return fn.isDir('/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test').then((result) => expect(result).toBe(true));
-	//    done()
-	//})
+	it('Si se ingresa una ruta de un directorio, debería retornar true', (done) => {
+	    return fn.isDir('/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test')
+	    .then((result) => {
+	    	expect(result).toBe(true);
+	    	done()
+	    });
+	})
 });
-/*
 
 describe('getPathsFromDirectory', () => {
 	const expected = [
-	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/test-directory/file1-1.md',
-	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/test-directory/file1-2.txt',
-	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/test-directory/level1/file2-1.js',
-	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/test-directory/level1/file2-2.md',
-	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/test-directory/level1/level2/file.txt'
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/file1-1.md',
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/file1-2.txt',
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/level1/file2-1.js',
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/level1/file2-2.md',
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/level1/level2/file-level2.md',
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/level1/level2/file.txt'
 	];
 	it('Debería ser una función', () => {
 		expect(typeof fn.getPathsFromDirectory).toBe('function');
 	})
 	it('Si se ingresa una ruta de un directorio, debería retornar un array', (done) => {
-		return fn.getPathsFromDirectory('/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/test-directory').then((result) => expect(Array.isArray(result).toBe(true)));
-		done()
+		return fn.getPathsFromDirectory('/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test')
+		.then((result) => {
+			expect(Array.isArray(result)).toBe(true);
+			done()
+		});
 	})
 	it('Si se ingresa una ruta de un directorio, debería retornar un array con todos las rutas de los archivos', (done) => {
-	    return fn.getPathsFromDirectory('/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/test-directory').then((result) => {
+	    return fn.getPathsFromDirectory('/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test').then((result) => {
 	    	expect(result).toEqual(expect.arrayContaining(expected));
-	    	expect(result).toHaveLength(5);
+	    	expect(result).toHaveLength(6);
+	    	done()
 	    });
-	    done()
 	})
 });
-*/
-// escribir archivos para testear, completar la redaccion de la prueba
-/*describe('getMdFiles', () => {
+describe('getMdFiles', () => {
+	const input = [
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/file1-1.md',
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/file1-2.txt',
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/level1/file2-1.js',
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/level1/file2-2.md',
+	'/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/level1/level2/file.txt'
+	];
 	it('Debería ser una función', () => {
 		expect(typeof fn.getMdFiles).toBe('function');
 	})
 	it('Si se ingresa una array de archivos que no tienen extensión .md, debería retornar un array vacío', () => {
-		expect(fn.getMdFiles(['index.spec.js', 'md-links.spec.js'])).toHaveLength(0);
-		expect(fn.getMdFiles(['index.spec.js', 'md-links.spec.js', 'README.md'])).toHaveLength(1);
+		expect(fn.getMdFiles(input)).toHaveLength(2);
 	})
 });
-*/
-// escribir archivo para testear
-/*describe('getMdLinks', () => {
+
+describe('getMdLinks', () => {
 	const expected = [];
 	it('Debería ser una función', () => {
 		expect(typeof fn.getMdLinks).toBe('function');
 	})
 	it('Debería retornar un array', (done) => {
-		return fn.getMdLinks('directory/file.txt').then((result) => expect(Array.isArray(result)).toBe(true));
+		return fn.getMdLinks(['/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/file1-1.md'])
+		.then((result) => {
+		expect(Array.isArray(result)).toBe(true); 
 		done()
+		});
+		
 	})
 	it('Debería retornar un array con longitud 2', (done) => {
-		return fn.getMdLinks('directory/file.txt').then((result) => expect(result).toHaveLength(1));
+		return fn.getMdLinks(['/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/file1-1.md'])
+		.then((result) => {
+		expect(result).toHaveLength(2); 
 		done()
+		});
 	})
-	// escribir el array expected
-	it('Debería retornar un array que contenga expected', (done) => {
-		return fn.getMdLinks('directory/file.txt').then((result) => expect(result).toEqual(expect.arrayContaining(expected)));
+	it('Debería retornar un array con longitud 0', (done) => {
+		return fn.getMdLinks(['/home/lorena/common-core/proyectos/LIM009-fe-md-links/test/directory_test/level1/level2/file-level2.md'])
+		.then((result) => {
+		expect(result).toHaveLength(0); 
 		done()
+		});
 	})
-});*/
+});

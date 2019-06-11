@@ -1,23 +1,49 @@
-const https = require('https');
+const fetch = require('node-fetch');
 
 module.exports = async function linksValidator(linksArr) {
-    return linksArr.map((obj) => {
+    const validated = linksArr.map((obj) => {
     return new Promise((resolve, reject) => {
-        https.get(obj.href, response => {
-        	if (response.statusCode >= 200 && response.statusCode < 400) {
-	            obj.statusCode = response.statusCode;
-    	        obj.statusMessage = response.statusMessage;
-        	    resolve(obj);
+        fetch(obj.href)
+        .then((response) => {
+        	if (response.status >= 200 && response.status < 400) {
+	            obj.statusCode = response.status;
+    	        obj.statusMessage = response.statusText.toLowerCase();
+                resolve(obj);
         	} else {
-        		obj.statusCode = response.statusCode;
+        		obj.statusCode = response.status;
     	        obj.statusMessage = 'fail';
-        	    resolve(obj);
+                resolve(obj);
         	}
-        }).on('error', (err) => {
-  			obj.statusCode = err.code;
+        }).catch('error', (err) => {
+  			obj.statusCode = err;
     		obj.statusMessage = 'fail';
         	resolve(obj);
 			});     
     })
     })
+    return Promise.all(validated);    
 }
+//linksValidator([{href: 'https://www.npmjs.com/package/node-fetch'}])
+/*
+module.exports = async function linksValidator(linksArr) {
+    return linksArr.map((obj) => {
+    return new Promise((resolve, reject) => {
+        https.get(obj.href, response => {
+            if (response.statusCode >= 200 && response.statusCode < 400) {
+                obj.statusCode = response.statusCode;
+                obj.statusMessage = response.statusMessage;
+                resolve(obj);
+            } else {
+                obj.statusCode = response.statusCode;
+                obj.statusMessage = 'fail';
+                resolve(obj);
+            }
+        }).on('error', (err) => {
+              obj.statusCode = err.code;
+            obj.statusMessage = 'fail';
+            resolve(obj);
+            });     
+    })
+    })
+}
+*/

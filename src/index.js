@@ -25,14 +25,11 @@ const getMdFiles = (filesArr) => {
 }
 
 async function getMdLinks(filesArr) {
-	// const regexUrl = /\((https?:\/\/)?([\d\w\.-]+)\.([\w\.]{2,6})([\/\w \.-]*)*\/?\)/;
 	const regexLink = /\[(.*?)\]/g;
 	const regexUrl = /(\]\((.*?)\))/g;
-	const regexLinks = /[^!](\[(.*?)\])(\((.*?)\))/g;
+	const regexLinks = /[^!](\[(.*?)\])(\((.*?)\))|^(\[(.*?)\])(\((.*?)\))/g;
 	const links = await Promise.all(filesArr.map(async (file) => {
-		// reads the file and storage its content
 		const content = await fsPromises.readFile(file, 'utf-8');
-		// looks for the links
 		const fileLinkList = await content.match(regexLinks);
 		if (fileLinkList !== null) {
 			return await fileLinkList.map((link) => {
@@ -40,8 +37,8 @@ async function getMdLinks(filesArr) {
 					href: link.match(regexUrl).toString().replace(/(\]\()|(\)$)/g, ''), 
 					text: link.match(regexLink).toString().replace(/(\[|\])/g, ''),
 					file
-				}// FALTA: truncado a 50 caracteres del text del link PREGUNTAR DONDE SE DEBE TRUNCAR
-			})// str.slice(0, 49)
+				}
+			})
 		}
 		return [];
 	}))
