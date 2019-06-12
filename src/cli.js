@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const mdLinks = require('./md-links');
-const validate = require('./validate');
 const stats = require('./stats');
 
 const [,, ...args] = process.argv;
@@ -23,29 +22,15 @@ optionArray.forEach(function (option) {
   }
 });
 
-if(!options.validate && !options.stats) {
+if(!options.stats) {
 	mdLinks(path, options)
-	.then( result => result.forEach((obj) => console.log(`${obj.file} ${obj.href} ${obj.text.slice(0,49)}`)))
-}
-
-if(options.validate && !options.stats) {
+	.then( result => result.forEach((result) =>
+		(options.validate) ? console.log(`${result.href} ${result.ok} ${result.status} ${result.text.slice(0,49)}`) : console.log(`${result.file} ${result.href} ${result.text.slice(0,49)}`)
+	))
+} else {
 	mdLinks(path, options)
-	.then( result => validate(result))
-	.then( validation => validation.forEach((result) => console.log(`${result.href} ${result.statusMessage} ${result.statusCode} ${result.text.slice(0,49)}`)))
-}
-
-if(!options.validate && options.stats) {
-	mdLinks(path, options)
-	.then( result => validate(result))
-	.then( validation => stats(validation))
-	.then( stats => console.log(`Total: ${stats.total}\nUnique: ${stats.unique}`))
-}
-
-if(options.validate && options.stats) {
-	mdLinks(path, options)
-	.then( result => validate(result))
-	.then( validation => stats(validation))
+	.then( result => stats(result))
 	.then( stats => console.log(`Total: ${stats.total}\nUnique: ${stats.unique}\nBroken: ${stats.broken}`))
 }
-
+// acomodar la funcion de para evitar la repeticion de codigo IMPORTANTE
 // request axios

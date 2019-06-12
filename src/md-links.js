@@ -1,4 +1,5 @@
 const fn = require('./index');
+const validate = require('./validate');
 
 async function mdLinks(path, options) {
 	try{
@@ -6,6 +7,9 @@ async function mdLinks(path, options) {
 	const fileList = (await fn.isDir(absolutePath)) ? await fn.getPathsFromDirectory(absolutePath) : [absolutePath]
 	const mdFiles = fn.getMdFiles(await fileList);
 	const links = await fn.getMdLinks(mdFiles);
+	if(options.validate) {
+		return validate(links);
+	}
 	return links;
 	}
 	catch(err){

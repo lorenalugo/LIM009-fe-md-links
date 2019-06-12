@@ -1,22 +1,22 @@
 const fetch = require('node-fetch');
 
-module.exports = async function linksValidator(linksArr) {
+module.exports = function linksValidator(linksArr) {
     const validated = linksArr.map((obj) => {
     return new Promise((resolve, reject) => {
         fetch(obj.href)
         .then((response) => {
         	if (response.status >= 200 && response.status < 400) {
-	            obj.statusCode = response.status;
-    	        obj.statusMessage = response.statusText.toLowerCase();
+	            obj.status = response.status;
+    	        obj.ok = response.statusText.toLowerCase();
                 resolve(obj);
         	} else {
-        		obj.statusCode = response.status;
-    	        obj.statusMessage = 'fail';
+        		obj.status = response.status;
+    	        obj.ok = 'fail';
                 resolve(obj);
         	}
         }).catch('error', (err) => {
-  			obj.statusCode = err;
-    		obj.statusMessage = 'fail';
+  			obj.status = err;
+    		obj.ok = 'fail';
         	resolve(obj);
 			});     
     })
