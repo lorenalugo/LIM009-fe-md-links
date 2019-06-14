@@ -26,8 +26,8 @@ const cli = (path, options) => {
   let stringOutput = '';
   if(!options.stats) {
     return mdLinks(path, options)
-    .then( result => {
-      result.forEach((result) => (options.validate) ? stringOutput += `${result.href} ${result.ok} ${result.status} ${result.text.slice(0,49)}\n` : stringOutput += `${result.file} ${result.href} ${result.text.slice(0,49)}\n`);
+    .then( res => {
+      res.forEach((result) => (options.validate) ? stringOutput += `${result.href} ${result.ok} ${result.status} ${result.text.slice(0,49)}\n` : stringOutput += `${result.file} ${result.href} ${result.text.slice(0,49)}\n`);
      return stringOutput;
   })
   .then(res => res); 
