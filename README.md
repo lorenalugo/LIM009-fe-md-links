@@ -14,7 +14,7 @@ A continuación se presenta el diagrama que representa el algoritmo implementado
 
 ## Instalación y Uso
 
-- Instalar vía `npm install --global <github-user>/md-links`
+- Instalar vía `npm install --global lorenalugo/md-links`
 
 ## `mdLinks(path, options)`
 

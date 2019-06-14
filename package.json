@@ -1,5 +1,5 @@
 {
-  "name": "lim009-fe-md-links",
+  "name": "md-links",
   "version": "1.0.0",
   "description": "md-links finder, frontend project @ Laboratoria",
   "main": "/src/index.js",
