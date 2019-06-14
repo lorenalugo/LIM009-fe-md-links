@@ -14,7 +14,7 @@ A continuación se presenta el diagrama que representa el algoritmo implementado
 
 ## Instalación y Uso
 
-- Instalar vía `npm install --global lorenalugo/LIM009-fe-md-links`
+- Instalar vía `npm install --global https://github.com/lorenalugo/LIM009-fe-md-links`
 
 ## `mdLinks(path, options)`
 
