@@ -22,15 +22,25 @@ optionArray.forEach(function (option) {
   }
 });
 
-if(!options.stats) {
-	mdLinks(path, options)
-	.then( result => result.forEach((result) =>
-		(options.validate) ? console.log(`${result.href} ${result.ok} ${result.status} ${result.text.slice(0,49)}`) : console.log(`${result.file} ${result.href} ${result.text.slice(0,49)}`)
-	))
-} else {
-	mdLinks(path, options)
-	.then( result => stats(result))
-	.then( stats => console.log(`Total: ${stats.total}\nUnique: ${stats.unique}\nBroken: ${stats.broken}`))
+const cli = (path, options) => {
+  let stringOutput = '';
+  if(!options.stats) {
+    return mdLinks(path, options)
+    .then( result => {
+      result.forEach((result) => (options.validate) ? stringOutput += `${result.href} ${result.ok} ${result.status} ${result.text.slice(0,49)}\n` : stringOutput += `${result.file} ${result.href} ${result.text.slice(0,49)}\n`);
+     return stringOutput;
+  })
+  .then(res => res); 
+  } else {
+    return mdLinks(path, options)
+    .then( result => stats(result))
+    .then( stats => (options.validate) ? `Total: ${stats.total}\nUnique: ${stats.unique}\nBroken: ${stats.broken}` : `Total: ${stats.total}\nUnique: ${stats.unique}`)
+  }
 }
-// acomodar la funcion de para evitar la repeticion de codigo IMPORTANTE
+
+cli(path, options).then(res => console.log(res));
+
+module.exports = cli;
+
+
 // request axios

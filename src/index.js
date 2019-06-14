@@ -8,14 +8,16 @@ const convertIntoAbsolute = (route) => {
 
 const isDir = (route) => {
 	return fsPromises.lstat(route)
-	.then(stats => stats.isDirectory());
+	.then(stats => stats.isDirectory())
+	.then(result => (result) ? result : false)
+	.catch(err => false)
 }
 
 async function getPathsFromDirectory(route) {
   const subdirs = await fsPromises.readdir(route);
   const files = await Promise.all(subdirs.map(async (subdir) => {
   const filePath = path.resolve(route, subdir);
-    return (await isDir(filePath)) ? getPathsFromDirectory(filePath) : filePath;
+    return (await isDir(filePath)) ? await getPathsFromDirectory(filePath) : filePath;
   }));
   return Array.prototype.concat(...files);
 }
@@ -42,7 +44,7 @@ async function getMdLinks(filesArr) {
 		}
 		return [];
 	}))
-	const output = await links.reduce(async (accumulator, currentValue) => await accumulator.concat(currentValue));
+	const output = await links.reduce((accumulator, currentValue) => accumulator.concat(currentValue));
 	return output;
 }
 
