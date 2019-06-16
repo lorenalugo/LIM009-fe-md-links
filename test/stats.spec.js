@@ -1,4 +1,4 @@
-const stats = require('../src/stats');;
+const stats = require('../src/stats');
 
 describe('stats', () => {
   it('Debería retornar un objeto, con cero links broken', (done) => {
