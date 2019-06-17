@@ -27,23 +27,20 @@ const getMdFiles = (filesArr) => {
 }
 
 async function getMdLinks(filesArr) {
-  const regexLink = /\[(.*?)\]/g;
-  const regexUrl = /(\]\((.*?)\))/g;
-  const regexLinks = /[^!](\[(.*?)\])(\((.*?)\))|^(\[(.*?)\])(\((.*?)\))/g;
+  const regex = /[^!]\[(.*?)\]\((.*?)\)|^\[(.*?)\]\((.*?)\)/g;
   const links = await Promise.all(filesArr.map(async (file) => {
     const content = await fsPromises.readFile(file, 'utf-8');
-    const fileLinkList = await content.match(regexLinks);
-    if (fileLinkList !== null) {
-      return await fileLinkList.map((link) => {
-        return {
-          href: link.match(regexUrl).toString().replace(/(\]\()|(\)$)/g, ''), 
-          text: link.match(regexLink).toString().replace(/(\[|\])/g, ''),
-          file
-        }
-      })
-    }
-    return [];
+    let matches;
+    let result = [];
+    do {
+      matches = regex.exec(content);
+      if (matches) {
+        result.push({href: matches[2], text: matches[1], file});
+      }
+    } while (matches);
+    return result;
   }))
+
   const output = await links.reduce((accumulator, currentValue) => accumulator.concat(currentValue));
   return output;
 }
