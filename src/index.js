@@ -27,7 +27,7 @@ const getMdFiles = (filesArr) => {
 }
 
 async function getMdLinks(filesArr) {
-  const regex = /[^!]\[(.*?)\]\((.*?)\)|^\[(.*?)\]\((.*?)\)/g;
+  const regex = /([^!]|^)\[(.*?)\]\((.*?)\)/g;
   const links = await Promise.all(filesArr.map(async (file) => {
     const content = await fsPromises.readFile(file, 'utf-8');
     let matches;
@@ -35,7 +35,7 @@ async function getMdLinks(filesArr) {
     do {
       matches = regex.exec(content);
       if (matches) {
-        result.push({href: matches[2], text: matches[1], file});
+        result.push({href: matches[3], text: matches[2], file});
       }
     } while (matches);
     return result;
