@@ -41,7 +41,7 @@ async function getMdLinks(filesArr) {
     return result;
   }))
 
-  const output = await links.reduce((accumulator, currentValue) => accumulator.concat(currentValue));
+  const output = links.reduce((accumulator, currentValue) => accumulator.concat(currentValue));
   return output;
 }
 
